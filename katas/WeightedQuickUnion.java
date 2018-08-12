@@ -1,43 +1,70 @@
-import java.util.Scanner;
-
 public class WeightedQuickUnion {
-  private int[] id;
-  private int[] sz;
-  private int count;
+	private int[] sz;
+	private int[] id;
+	private int count;
 
-  public WeightedQuickUnion(int N) {
-    id = new int[N];
-    count = N;
-    for (int i = 0; i < N; i++) id[i] = i;
-    sz = new int[N];
-    for (int i = 0; i < N; i++) sz[i] = 1;
-  }
+	public WeightedQuickUnion(int size) {
+		count = size;
+		sz = new int[size];
+		id = new int[size];
+		for (int i = 0; i < size; i++) {
+			sz[i] = 1;
+			id[i] = i;
+		}
+	}
 
-  public int count() {
-    return count;
-  }
+	public int find(int p) {
+		while (p != id[p]) p = id[p];
+		return p;
+	}
 
-  public boolean connected(int p, int q) {
-    return find(p) == find(q);
-  }
+	public void union(int p, int q) {
+		int i = find(p);
+		int j = find(q);
+		if (i == j) return;
 
-  public void union(int p, int q) {
-    int i = find(p);
-    int j = find(q);
-    if (i == j) return;
+		if (sz[i] > sz[j]) {
+			sz[i] += sz[j];
+			id[j] = id[i];
+		} else {
+			sz[j] += sz[i];
+			id[i] = id[j];
+		}
 
-    if (sz[i] < sz[j]) { id[i] = j; sz[j] += sz[i]; }
-    else { id[j] = i; sz[i] += sz[j]; }
+		count--;
+	}
 
-    count--;
-  }
+	public boolean connected(int p, int q) {
+		return find(p) == find(q);
+	}
 
-  private int find(int p) {
-    while (p != id[p]) p = id[p];
-    return p;
-  }
+	public int size() {
+		return id.length;
+	}
 
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-  }
+	public int count() {
+		return count;
+	}
+
+	public static void main(String[] args) {
+		WeightedQuickUnion qu = new WeightedQuickUnion(10);
+		qu.union(1, 8);
+		System.out.println(qu.count() == 9);
+		qu.union(2, 7);
+		System.out.println(qu.count() == 8);
+		qu.union(6, 5);
+		System.out.println(qu.count() == 7);
+		qu.union(4, 5);
+		System.out.println(qu.count() == 6);
+		qu.union(0, 4);
+		System.out.println(qu.count() == 5);
+		qu.union(3, 1);
+		System.out.println(qu.count() == 4);
+		qu.union(9, 1);
+		System.out.println(qu.count() == 3);
+		qu.union(1, 2);
+		System.out.println(qu.count() == 2);
+		qu.union(9, 4);
+		System.out.println(qu.count() == 1);
+	}
 }

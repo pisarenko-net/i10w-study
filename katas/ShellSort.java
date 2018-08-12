@@ -1,18 +1,21 @@
 import java.util.Arrays;
 import java.util.Random;
 
-public class SelectionSort {
+public class ShellSort {
 	public static <T extends Comparable<T>> void sort(T[] a) {
-		for (int i = 0; i < a.length; i++) {
-			int minIndex = i;
+		int N = a.length;
+		int h = 1;
 
-			for (int j = i; j < a.length; j++) {
-				if (less(a[j], a[minIndex])) {
-					minIndex = j;
+		while (h < N/3) h = h*3 + 1;
+
+		while (h >= 1) {
+			for (int i = h; i < N; i += h) {
+				for (int j = i; j >= h && less(a[j], a[j-h]); j -= h) {
+					exch(a, j, j-h);
 				}
 			}
 
-			exch(a, i, minIndex);
+			h /= 3;
 		}
 	}
 
@@ -30,9 +33,9 @@ public class SelectionSort {
 		Integer[] input = new Random().ints(15, 0, 100).boxed().toArray(Integer[]::new);
 		Integer[] check = Arrays.copyOf(input, input.length);
 
-		SelectionSort.sort(input);
 		Arrays.sort(check);
+		ShellSort.sort(input);
 
-		System.out.println("Sort seems to work correctly: " + Arrays.equals(input, check));
+		System.out.println(Arrays.equals(check, input));
 	}
 }

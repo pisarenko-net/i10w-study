@@ -55,7 +55,7 @@ public class Queue<Item> implements Iterable<Item> {
 		Node curr = head;
 
 		public boolean hasNext() {
-			return curr != null && curr.next != null;
+			return curr != null;
 		}
 
 		public Item next() {
