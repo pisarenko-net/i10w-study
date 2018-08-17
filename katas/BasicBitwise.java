@@ -1,4 +1,4 @@
-public class Bin {
+public class BasicBitwise {
 	public static int set(int var, int i) {
 		return var | (1 << i);
 	}
