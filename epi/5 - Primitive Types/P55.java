@@ -28,7 +28,7 @@ public class P55 {
 			tempB >>>= 1;
 		}
 
-		return sum;
+		return sum | carryin;
 	}
 
 	public static void main(String[] args) {
