@@ -1,29 +1,7 @@
-import java.util.Map;
-import com.google.common.collect.ImmutableMap;
-
 /**
  * Convert a string given in one base into another base. 2 <= b1, b2 <= 16.
  */
 public class P72 {
-	private final static Map<Integer, Character> digits = ImmutableMap.<Integer, Character>builder()
-		.put(0, '0')
-		.put(1, '1')
-		.put(2, '2')
-		.put(3, '3')
-		.put(4, '4')
-		.put(5, '5')
-		.put(6, '6')
-		.put(7, '7')
-		.put(8, '8')
-		.put(9, '9')
-		.put(10, 'A')
-		.put(11, 'B')
-		.put(12, 'C')
-		.put(13, 'D')
-		.put(14, 'E')
-		.put(15, 'F')
-		.build();
-
 	public static String convertBase(String input, int sourceBase, int targetBase) {
 		return convertIntToString(convertStringToDecimal(input, sourceBase), targetBase);
 	}
@@ -43,7 +21,7 @@ public class P72 {
 		StringBuffer result = new StringBuffer();
 
 		while (value != 0) {
-			result.append(digits.get(value % base));
+			result.append(Character.forDigit(value % base, base));
 			value /= base;
 		}
 
@@ -53,6 +31,7 @@ public class P72 {
 	public static void main(String[] args) {
 		//System.out.println(convertStringToDecimal("12", 10));
 		//System.out.println(convertIntToString(12, 3));
-		System.out.println(convertBase("615", 7, 13));
+		System.out.println(convertBase("615", 7, 13));  // 1a7
+		System.out.println(convertBase("1a7", 13, 7));  // 615
 	}
 }

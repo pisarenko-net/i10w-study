@@ -10,11 +10,11 @@ public class InsertionSort {
 		}
 	}
 
-	public static <T extends Comparable<T>> boolean less(T a, T b) {
+	private static <T extends Comparable<T>> boolean less(T a, T b) {
 		return a.compareTo(b) < 0;
 	}
 
-	public static <T extends Comparable<T>> void exch(T[] a, int i, int j) {
+	private static <T extends Comparable<T>> void exch(T[] a, int i, int j) {
 		T temp = a[i];
 		a[i] = a[j];
 		a[j] = temp;

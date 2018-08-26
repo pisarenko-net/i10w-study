@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MergeSort {
-	private static <T extends Comparable<T>> void sort(T[] a) {
+	public static <T extends Comparable<T>> void sort(T[] a) {
 		T[] aux = (T[]) new Comparable[a.length];
 		sort(a, 0, a.length - 1, aux);
 	}
@@ -14,6 +14,7 @@ public class MergeSort {
 		sort(a, mid + 1, hi, aux);
 		merge(a, lo, mid, hi, aux);
 	}
+	
 	private static <T extends Comparable<T>> void merge(T[] a, int lo, int mid, int hi, T[] aux) {
 		int i = lo, j = mid + 1;
 

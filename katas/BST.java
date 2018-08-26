@@ -108,7 +108,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 	}
 
 	private Node max(Node n) {
-		return n.right == null ? return n : max(n.right);
+		return n.right == null ? n : max(n.right);
 	}
 
 	public Iterable<Key> keys() {
