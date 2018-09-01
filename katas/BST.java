@@ -144,13 +144,13 @@ public class BST<Key extends Comparable<Key>, Value> {
 		System.out.println(bst.get(18));
 		System.out.println(bst.get(2));
 
-		// System.out.println(bst.size());
-		// System.out.println(bst.height());
-		// System.out.println(bst.rank(1));
-		// System.out.println(bst.select(4));
-		// System.out.println(bst.floor(89));
-		// System.out.println(bst.min());
-		// System.out.println(bst.max());
+		System.out.println(bst.size());
+		System.out.println(bst.height());
+		System.out.println(bst.rank(1));
+		System.out.println(bst.select(4));
+		System.out.println(bst.floor(89));
+		System.out.println(bst.min());
+		System.out.println(bst.max());
 
 		// for (Integer k : bst.keys(2, 30)) {
 		// 	System.out.println(k);
