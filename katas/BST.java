@@ -9,8 +9,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 	private class Node {
 		@NonNull Key key;
 		@NonNull Value value;
-		Node left;
-		Node right;
+		Node left, right;
 		int size = 1;
 	}
 
@@ -69,16 +68,15 @@ public class BST<Key extends Comparable<Key>, Value> {
 	}
 
 	public Key select(int rank) {
-		Node n = select(root, rank);
-		return n == null ? null : n.key;
+		return select(root, rank);
 	}
 
-	private Node select(Node n, int rank) {
+	private Key select(Node n, int rank) {
 		if (n == null) return null;
 		int t = size(n.left);
 		if (t > rank) return select(n.left, rank);
 		else if (t < rank) return select(n.right, rank - t - 1);
-		else return n;
+		else return n.key;
 	}
 
 	public Key floor(Key key) {
