@@ -3,13 +3,9 @@ import lombok.*;
 public class BTree<Key extends Comparable<Key>, Value> {
 	private static final int M = 4;
 
-	private Node root;
-	private int height;
-	private int n;
-
 	private static class Node {
-		private int childCount;
-		private Entry[] children = new Entry[M];
+		int childCount;
+		Entry[] children = new Entry[M];
 
 		Node(int childCount) {
 			this.childCount = childCount;
@@ -18,21 +14,21 @@ public class BTree<Key extends Comparable<Key>, Value> {
 
 	@AllArgsConstructor
 	private static class Entry {
-		private Comparable key;
-		private Object value;
-		private Node next;
+		Comparable key;
+		Object value;
+		Node next;
 	}
+
+	private Node root;
+	private int height;
+	private int count;
 
 	public BTree() {
 		root = new Node(0);
 	}
 
 	public int size() {
-		return n;
-	}
-
-	public boolean isEmpty() {
-		return size() == 0;
+		return count;
 	}
 
 	public int height() {
@@ -69,7 +65,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 
 	public void put(Key key, Value value) {
 		Node u = put(root, key, value, height);
-		n++;
 		if (u == null) return;
 
 		Node t = new Node(2);
@@ -86,9 +81,13 @@ public class BTree<Key extends Comparable<Key>, Value> {
 		if (isExternalNode(currentHeight)) {
 			t.value = val;
 			while (j < n.childCount) {
-				if (less(key, n.children[j].key)) break;
+				if (key.equals(n.children[j].key)) {
+					n.children[j].value = val;
+					return null;
+				} else if (less(key, n.children[j].key)) break;
 				j++;
 			}
+			this.count++;
 		} else {
 			while (j < n.childCount) {
 				if (j+1 == n.childCount || less(key, n.children[j+1].key)) {
@@ -133,6 +132,7 @@ public class BTree<Key extends Comparable<Key>, Value> {
         st.put("hotel", "8");
         st.put("india", "9");
         st.put("julie", "10");
+        st.put("www.google.com", "0xFFFF");
 
         System.out.println("www.google.com:\t" + st.get("www.google.com"));
         System.out.println("www.nytimes.com:\t" + st.get("www.nytimes.com"));
