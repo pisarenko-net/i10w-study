@@ -91,10 +91,11 @@ public class BTree<Key extends Comparable<Key>, Value> {
 		} else {
 			while (j < n.childCount) {
 				if (j+1 == n.childCount || less(key, n.children[j+1].key)) {
-					Node u = put(n.children[j++].next, key, val, currentHeight-1);
+					Node u = put(n.children[j].next, key, val, currentHeight-1);
 					if (u == null) return null;
 					t.key = u.children[0].key;
 					t.next = u;
+					j++;
 					break;
 				}
 				j++;
