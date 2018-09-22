@@ -32,8 +32,7 @@ public class SkipList<Key extends Comparable<Key>, Value> {
 
 	public Value get(Key key) {
 		Node n = get(head, key, maxLevel);
-		if (n == null || !key.equals(n.key)) return null;
-		return n.value;  
+		return n != null && key.equals(n.key) ? n.value : return null;
 	}
 
 	private Node get(Node curr, Key key, int level) {
