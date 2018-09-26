@@ -9,12 +9,12 @@ public class MaxPQ<T extends Comparable<T>> {
 		pq = (T[]) new Comparable[size+1];
 	}
 
-	public void insert(T key) {
+	public void add(T key) {
 		pq[++N] = key;
 		swim(N);
 	}
 
-	public T delMax() {
+	public T remove() {
 		T max = pq[1];
 		exch(1, N--);
 		pq[N+1] = null;
@@ -61,12 +61,12 @@ public class MaxPQ<T extends Comparable<T>> {
 		MaxPQ<Integer> pq = new MaxPQ<>(100);
 		new Random().ints(15, 0, 100).boxed().forEach(num -> {
 			System.out.print(num + " ");
-			pq.insert(num);
+			pq.add(num);
 		});
 		System.out.println();
 
 		while (!pq.isEmpty()) {
-			System.out.println(pq.delMax());
+			System.out.println(pq.remove());
 		}
 	}
 }
