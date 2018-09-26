@@ -33,12 +33,13 @@ public class LinearProbingHashMap<Key extends Comparable<Key>, Value> {
 	public void put(Key key, Value value) {
 		if (count > keys.length/2) resize(keys.length*2);
 
-		int i;
-		for (i = hash(key); keys[i] != null; i = increment(i)) {
+		int i = hash(key);
+		while (keys[i] != null) {
 			if (key.equals(keys[i])) {
 				values[i] = value;
 				return;
 			}
+			i = increment(i);
 		}
 
 		keys[i] = key;
