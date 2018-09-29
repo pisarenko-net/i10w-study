@@ -6,8 +6,11 @@ import java.util.Scanner;
 
 public class DFS {
 	private boolean[] marked;
+	private boolean[] onStack;
 	private int[] edgeTo;
 	private int s;
+
+	private Deque<Integer> cycle;
 
 	private Queue<Integer> preorder;
 	private Queue<Integer> postorder;
@@ -20,6 +23,7 @@ public class DFS {
 
 		marked = new boolean[g.V()];
 		edgeTo = new int[g.V()];
+		onStack = new boolean[g.V()];
 		this.s = s;
 		dfs(g, s);
 	}
@@ -27,13 +31,21 @@ public class DFS {
 	private void dfs(Graph g, int v) {
 		preorder.add(v);
 
+		onStack[v] = true;
 		marked[v] = true;
 		for (int w : g.adj(v)) {
-			if (!marked[w]) {
+			if (this.hasCycle()) return;
+			else if (!marked[w]) {
 				edgeTo[w] = v;
 				dfs(g, w);
+			} else if (onStack[w]) {
+				cycle = new LinkedList<>();
+				for (int x = v; x != w; x = edgeTo[x]) cycle.push(x);
+				cycle.push(w);
+				cycle.push(v);
 			}
 		}
+		onStack[v] = false;
 
 		postorder.add(v);
 		reversePostorder.push(v);
@@ -63,11 +75,31 @@ public class DFS {
 		return new LinkedList<>(reversePostorder);
 	}
 
+	public Iterable<Integer> topological() {
+		return reversePostorder();
+	}
+
+	public boolean hasCycle() {
+		return cycle != null;
+	}
+
+	public Iterable<Integer> cycle() {
+		return new LinkedList<>(cycle);
+	}
+
 	public static void main(String[] args) throws Exception {
 		Graph g = new Digraph(new Scanner(new File("dependencies/tinyG.txt")));
 		int s = Integer.parseInt(args[0]);
 
 		DFS dfs = new DFS(g, s);
+
+		System.out.println("Graph has cycle: " + dfs.hasCycle());
+		if (dfs.hasCycle()) {
+			for (int x : dfs.cycle()) System.out.print(x + " ");
+			System.out.println();
+			return;
+		}
+
 		for (int v = 0; v < g.V(); v++) {
 			if (dfs.hasPathTo(v)) {
 				System.out.print(s + " to " + v + ": ");
