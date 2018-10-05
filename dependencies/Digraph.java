@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Digraph implements Graph {
-	private final int vertices;
 	private int edges;
 	private List<Integer>[] adjacencies;
 
 	public Digraph(int vertices) {
-		this.vertices = vertices;
 		adjacencies = new ArrayList[vertices];
 		for (int i = 0; i < vertices; i++) adjacencies[i] = new ArrayList<>();
 	}
@@ -25,7 +23,7 @@ public class Digraph implements Graph {
 	}
 
 	public int V() {
-		return vertices;
+		return adjacencies.length;
 	}
 
 	public int E() {
@@ -42,6 +40,7 @@ public class Digraph implements Graph {
 	}
 
 	public Digraph reverse() {
+		int vertices = adjacencies.length;
 		Digraph g = new Digraph(vertices);
 		for (int v = 0; v < vertices; v++) {
 			for (int w : adjacencies[v]) {

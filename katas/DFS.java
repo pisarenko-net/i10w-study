@@ -12,15 +12,11 @@ public class DFS {
 
 	private Deque<Integer> cycle;
 
-	private Queue<Integer> preorder;
-	private Queue<Integer> postorder;
-	private Deque<Integer> reversePostorder;
+	private Queue<Integer> preorder = new LinkedList<>();
+	private Queue<Integer> postorder = new LinkedList<>();
+	private Deque<Integer> reversePostorder = new LinkedList<>();
 
 	public DFS(Graph g, int s) {
-		preorder = new LinkedList<>();
-		postorder = new LinkedList<>();
-		reversePostorder = new LinkedList<>();
-
 		marked = new boolean[g.V()];
 		edgeTo = new int[g.V()];
 		onStack = new boolean[g.V()];

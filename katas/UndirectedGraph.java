@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UndirectedGraph implements Graph {
-	private final int vertices;
 	private int edges;
 	private List<Integer>[] adj;
 
 	public UndirectedGraph(int vertices) {
-		this.vertices = vertices;
 		adj = new ArrayList[vertices];
 		for (int i = 0; i < vertices; i++) adj[i] = new ArrayList<>();
 	}
@@ -25,7 +23,7 @@ public class UndirectedGraph implements Graph {
 	}
 
 	public int V() {
-		return vertices;
+		return adj.length;
 	}
 
 	public int E() {
