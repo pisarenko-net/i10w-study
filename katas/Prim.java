@@ -42,8 +42,7 @@ public class Prim {
 
 	public Iterable<Edge> edges() {
 		List<Edge> mst = new ArrayList<>();
-		for (int v = 0; v < edgeTo.length; v++) {
-			Edge e = edgeTo[v];
+		for (Edge e : edgeTo) {
 			if (e != null) mst.add(e);
 		}
 		return mst;

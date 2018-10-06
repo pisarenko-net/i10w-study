@@ -7,16 +7,14 @@ import java.util.Scanner;
 import edu.princeton.cs.algs4.UF;
 
 public class Kruskal {
-	private List<Edge> mst;
+	private List<Edge> mst = new ArrayList<>();
 
 	public Kruskal(EdgeWeightedGraph g) {
-		mst = new ArrayList<>();
-		
-		PriorityQueue<Edge> pq = new PriorityQueue<>();
-		for (Edge e : g.edges()) pq.add(e);
-
 		UF uf = new UF(g.V());
 
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
+		for (Edge e : g.edges()) pq.add(e);
+			
 		while (!pq.isEmpty() && mst.size() < (g.V() - 1)) {
 			Edge e = pq.remove();
 			int v = e.either(), w = e.other(v);
