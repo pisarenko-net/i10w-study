@@ -1,8 +1,9 @@
 import java.io.File;
-import java.util.Deque;
-import java.util.Queue;
-import java.util.LinkedList;
 import java.util.Scanner;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BFS {
 	private boolean[] marked;
@@ -13,10 +14,7 @@ public class BFS {
 		marked = new boolean[g.V()];
 		edgeTo = new int[g.V()];
 		this.s = s;
-		bfs(g, s);
-	}
 
-	private void bfs(Graph g, int s) {
 		Queue<Integer> queue = new LinkedList<>();
 		marked[s] = true;
 		queue.add(s);
@@ -24,11 +22,10 @@ public class BFS {
 		while (!queue.isEmpty()) {
 			int v = queue.remove();
 			for (int w : g.adjacentVertices(v)) {
-				if (!marked[w]) {
-					marked[w] = true;
-					edgeTo[w] = v;
-					queue.add(w);
-				}
+				if (marked[w]) continue;
+				marked[w] = true;
+				edgeTo[w] = v;
+				queue.add(w);
 			}
 		}
 	}
@@ -52,7 +49,7 @@ public class BFS {
 		BFS bfs = new BFS(g, s);
 		for (int v = 0; v < g.V(); v++) {
 			if (bfs.hasPathTo(v)) {
-				System.out.println(s + " to " + v + ": ");
+				System.out.print(s + " to " + v + ": ");
 				for (int x : bfs.pathTo(v)) {
 					if (x == s) System.out.print(x);
 					else System.out.print("-" + x);
