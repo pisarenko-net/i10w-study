@@ -89,8 +89,7 @@ public class BellmanFord {
 
 		if (d.hasNegativeCycle()) {
 			System.out.println("Negative cycle detected:");
-			for (int v : d.negativeCycle())
-			System.out.println(v);
+			for (int v : d.negativeCycle()) System.out.println(v);
 		} else {
 			for (int v = 0; v < g.V(); v++) {
 				if (d.hasPathTo(v)) {
