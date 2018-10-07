@@ -29,7 +29,7 @@ public class DFS {
 
 		onStack[v] = true;
 		marked[v] = true;
-		for (int w : g.adj(v)) {
+		for (int w : g.adjacentVertices(v)) {
 			if (this.hasCycle()) return;
 			else if (!marked[w]) {
 				edgeTo[w] = v;
@@ -72,6 +72,7 @@ public class DFS {
 	}
 
 	public Iterable<Integer> topological() {
+		if (hasCycle()) throw new IllegalStateException("graph has a cycle");
 		return reversePostorder();
 	}
 
@@ -84,7 +85,7 @@ public class DFS {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Graph g = new Digraph(new Scanner(new File("dependencies/tinyG.txt")));
+		Graph g = new DirectedGraph(new Scanner(new File("dependencies/tinyG.txt")));
 		int s = Integer.parseInt(args[0]);
 
 		DFS dfs = new DFS(g, s);

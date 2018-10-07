@@ -3,16 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Digraph implements Graph {
+public class DirectedGraph implements Graph {
 	private int edges;
 	private List<Integer>[] adjacencies;
 
-	public Digraph(int vertices) {
+	public DirectedGraph(int vertices) {
 		adjacencies = new ArrayList[vertices];
 		for (int i = 0; i < vertices; i++) adjacencies[i] = new ArrayList<>();
 	}
 
-	public Digraph(Scanner scanner) {
+	public DirectedGraph(Scanner scanner) {
 		this(scanner.nextInt());
 		int edges = scanner.nextInt();
 		for (int i = 0; i < edges; i++) {
@@ -35,13 +35,13 @@ public class Digraph implements Graph {
 		edges++;
 	}
 
-	public Iterable<Integer> adj(int v) {
+	public Iterable<Integer> adjacentVertices(int v) {
 		return new ArrayList<>(adjacencies[v]);
 	}
 
-	public Digraph reverse() {
+	public DirectedGraph reverse() {
 		int vertices = adjacencies.length;
-		Digraph g = new Digraph(vertices);
+		DirectedGraph g = new DirectedGraph(vertices);
 		for (int v = 0; v < vertices; v++) {
 			for (int w : adjacencies[v]) {
 				g.addEdge(w, v);
@@ -51,6 +51,6 @@ public class Digraph implements Graph {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Digraph g = new Digraph(new Scanner(new File("dependencies/tinyG.txt")));
+		DirectedGraph g = new DirectedGraph(new Scanner(new File("dependencies/tinyG.txt")));
 	}
 }

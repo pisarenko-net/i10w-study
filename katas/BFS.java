@@ -23,7 +23,7 @@ public class BFS {
 
 		while (!queue.isEmpty()) {
 			int v = queue.remove();
-			for (int w : g.adj(v)) {
+			for (int w : g.adjacentVertices(v)) {
 				if (!marked[w]) {
 					marked[w] = true;
 					edgeTo[w] = v;

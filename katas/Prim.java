@@ -28,7 +28,7 @@ public class Prim {
 
 	private void visit(EdgeWeightedGraph g, int v) {
 		marked[v] = true;
-		for (Edge e : g.adj(v)) {
+		for (Edge e : g.adjacentEdges(v)) {
 			int w = e.other(v);
 			if (marked[w]) continue;
 			if (e.weight() < distTo[w]) {

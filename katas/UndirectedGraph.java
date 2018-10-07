@@ -36,7 +36,7 @@ public class UndirectedGraph implements Graph {
 		edges++;
 	}
 
-	public Iterable<Integer> adj(int v) {
+	public Iterable<Integer> adjacentVertices(int v) {
 		return new ArrayList<>(adj[v]);
 	}
 

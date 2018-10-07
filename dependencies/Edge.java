@@ -14,10 +14,18 @@ public class Edge implements Comparable<Edge> {
 		return v;
 	}
 
+	public int from() {
+		return v;
+	}
+
 	public int other(int vertex) {
 		if (vertex == this.v) return this.w;
 		else if (vertex == this.w) return this.v;
 		throw new IllegalArgumentException("invalid vertice given");
+	}
+
+	public int to() {
+		return w;
 	}
 
 	public int compareTo(Edge other) {

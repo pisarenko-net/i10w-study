@@ -1,9 +1,11 @@
-import java.util.ArrayList;
 import java.io.File;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-public class EdgeWeightedGraph {
+public class EdgeWeightedGraph implements Graph {
 	private final int vertices;
 	private int edges;
 	private List<Edge>[] adjacencies;
@@ -37,8 +39,12 @@ public class EdgeWeightedGraph {
 		return edges;
 	}
 
-	public Iterable<Edge> adj(int v) {
+	public Iterable<Edge> adjacentEdges(int v) {
 		return new ArrayList<>(adjacencies[v]);
+	}
+
+	public Iterable<Integer> adjacentVertices(int v) {
+		return adjacencies[v].stream().map(edge -> edge.other(v)).collect(Collectors.toList());
 	}
 
 	public Iterable<Edge> edges() {
