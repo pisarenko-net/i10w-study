@@ -13,7 +13,7 @@ public class AcyclicShortestPath {
 		for (int i = 0; i < g.V(); i++) distTo[i] = Double.POSITIVE_INFINITY;
 		distTo[s] = 0.0;
 
-		DFS dfs = new DFS(g, s);
+		DFS dfs = new DFS(g);
 		for (int v : dfs.topological()) {
 			relax(g, v);
 		}

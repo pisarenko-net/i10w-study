@@ -24,6 +24,15 @@ public class DFS {
 		dfs(g, s);
 	}
 
+	public DFS(Graph g) {
+		marked = new boolean[g.V()];
+		edgeTo = new int[g.V()];
+		onStack = new boolean[g.V()];
+		for (int v = 0; v < g.V(); v++) {
+			if (!marked[v]) dfs(g, v);
+		}
+	}
+
 	private void dfs(Graph g, int v) {
 		preorder.add(v);
 
@@ -81,7 +90,7 @@ public class DFS {
 	}
 
 	public Iterable<Integer> cycle() {
-		return new LinkedList<>(cycle);
+		return cycle != null ? new LinkedList<>(cycle) : null;
 	}
 
 	public static void main(String[] args) throws Exception {
