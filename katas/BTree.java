@@ -1,11 +1,11 @@
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 public class BTree<Key extends Comparable<Key>, Value> {
 	private static final int M = 4;
 
-	private static class Node {
+	private class Node {
 		int childCount;
-		Entry[] children = new Entry[M];
+		Entry[] children = (Entry[]) new BTree.Entry[M];
 
 		Node(int childCount) {
 			this.childCount = childCount;
@@ -13,9 +13,9 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	}
 
 	@AllArgsConstructor
-	private static class Entry {
-		Comparable key;
-		Object value;
+	private class Entry {
+		Key key;
+		Value value;
 		Node next;
 	}
 
@@ -42,7 +42,7 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	private Value get(Node n, Key key, int currentHeight) {
 		if (isExternalNode(currentHeight)) {
 			for (int j = 0; j < n.childCount; j++) {
-				if (key.equals(n.children[j].key)) return (Value) n.children[j].value;
+				if (key.equals(n.children[j].key)) return n.children[j].value;
 			}
 		} else {
 			for (int j = 0; j < n.childCount; j++) {
@@ -51,7 +51,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 				}
 			}
 		}
-
 		return null;
 	}
 
@@ -59,30 +58,30 @@ public class BTree<Key extends Comparable<Key>, Value> {
 		return height == 0;
 	}
 
-	private boolean less(Comparable a, Comparable b) {
+	private boolean less(Key a, Key b) {
 		return a.compareTo(b) < 0;
 	}
 
 	public void put(Key key, Value value) {
-		Node u = put(root, key, value, height);
-		if (u == null) return;
+		Node t = put(root, key, value, height);
+		if (t == null) return;
 
-		Node t = new Node(2);
-		t.children[0] = new Entry(root.children[0].key, null, root);
-		t.children[1] = new Entry(u.children[0].key, null, u);
-		root = t;
+		Node u = new Node(2);
+		u.children[0] = new Entry(root.children[0].key, null, root);
+		u.children[1] = new Entry(t.children[0].key, null, t);
+		root = u;
 		height++;
 	}
 
-	private Node put(Node n, Key key, Value val, int currentHeight) {
+	private Node put(Node n, Key key, Value value, int currentHeight) {
 		int j = 0;
 		Entry t = new Entry(key, null, null);
 
 		if (isExternalNode(currentHeight)) {
-			t.value = val;
+			t.value = value;
 			while (j < n.childCount) {
 				if (key.equals(n.children[j].key)) {
-					n.children[j].value = val;
+					n.children[j].value = value;
 					return null;
 				} else if (less(key, n.children[j].key)) break;
 				j++;
@@ -91,7 +90,7 @@ public class BTree<Key extends Comparable<Key>, Value> {
 		} else {
 			while (j < n.childCount) {
 				if (j+1 == n.childCount || less(key, n.children[j+1].key)) {
-					Node u = put(n.children[j].next, key, val, currentHeight-1);
+					Node u = put(n.children[j].next, key, value, currentHeight-1);
 					if (u == null) return null;
 					t.key = u.children[0].key;
 					t.next = u;

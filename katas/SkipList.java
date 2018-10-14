@@ -56,7 +56,7 @@ public class SkipList<Key extends Comparable<Key>, Value> {
 		return a.compareTo(b) < 0;
 	}
 
-	private void put(Key key, Value value) {
+	public void put(Key key, Value value) {
 		if (value == null) throw new IllegalArgumentException("null not allowed");
 
 		Node n = get(head, key, maxLevel);
