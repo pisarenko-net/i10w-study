@@ -1,11 +1,15 @@
 import java.util.Iterator;
 
 public class Queue<Item> implements Iterable<Item> {
-	private int size;
-	private Node head;
-	private Node tail;
+	private class Node {
+		Item item;
+		Node next;
+	}
 
-	public void enqueue(Item item) {
+	private Node head, tail;
+	private int size;
+
+	public void add(Item item) {
 		Node node = new Node();
 		node.item = item;
 
@@ -19,7 +23,7 @@ public class Queue<Item> implements Iterable<Item> {
 		size++;
 	}
 
-	public Item dequeue() {
+	public Item remove() {
 		if (isEmpty()) {
 			throw new IndexOutOfBoundsException("queue is empty");
 		}
@@ -46,11 +50,6 @@ public class Queue<Item> implements Iterable<Item> {
 		return new QueueIterator();
 	}
 
-	private class Node {
-		Item item;
-		Node next;
-	}
-
 	private class QueueIterator implements Iterator<Item> {
 		Node curr = head;
 
@@ -71,10 +70,10 @@ public class Queue<Item> implements Iterable<Item> {
 	public static void main(String[] args) {
 		Queue<Integer> queue = new Queue<>();
 
-		queue.enqueue(1);
-		queue.enqueue(2);
-		queue.enqueue(3);
-		queue.enqueue(4);
+		queue.add(1);
+		queue.add(2);
+		queue.add(3);
+		queue.add(4);
 
 		System.out.print("Current state of the queue: ");
 		for (Integer item : queue) {
@@ -82,15 +81,15 @@ public class Queue<Item> implements Iterable<Item> {
 		}
 		System.out.println();
 
-		System.out.println(queue.dequeue());
-		System.out.println(queue.dequeue());
-		System.out.println(queue.dequeue());
+		System.out.println(queue.remove());
+		System.out.println(queue.remove());
+		System.out.println(queue.remove());
 
-		queue.enqueue(5);
+		queue.add(5);
 
-		System.out.println(queue.dequeue());
-		System.out.println(queue.dequeue());
+		System.out.println(queue.remove());
+		System.out.println(queue.remove());
 
-		System.out.println(queue.dequeue());
+		System.out.println(queue.remove());
 	}
 }
