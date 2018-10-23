@@ -1,32 +1,27 @@
 import java.io.File;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class BellmanFord {
 	private double[] distTo;
 	private Edge[] edgeTo;
-	private boolean[] onQueue;
-	private Queue<Integer> queue;
 	private Iterable<Integer> cycle;
-	private int cost;
 
 	public BellmanFord(EdgeWeightedDirectedGraph g, int s) {
+		edgeTo = new Edge[g.V()];
+
 		distTo = new double[g.V()];
 		for (int i = 0; i < g.V(); i++) distTo[i] = Double.POSITIVE_INFINITY;
-		edgeTo = new Edge[g.V()];
-		onQueue = new boolean[g.V()];
-		queue = new LinkedList<>();
-
 		distTo[s] = 0.0;
-		onQueue[s] = true;
-		queue.add(s);
 
-		while (!queue.isEmpty() && !hasNegativeCycle()) {
-			int v = queue.remove();
-			onQueue[v] = false;
-			relax(g, v);
+		for (int i = 0; i < g.V(); i++) {
+			for (int v = 0; v < g.V(); v++) {
+				relax(g, v);
+			}
+
+			findNegativeCycle();
+			if (hasNegativeCycle()) return;
 		}
 	}
 
@@ -36,15 +31,6 @@ public class BellmanFord {
 			if (distTo[w] > distTo[v] + e.weight()) {
 				distTo[w] = distTo[v] + e.weight();
 				edgeTo[w] = e;
-				if (!onQueue[w]) {
-					queue.add(w);
-					onQueue[w] = true;
-				}
-			}
-
-			if (cost++ % g.V() == 0) {
-				findNegativeCycle();
-				if (hasNegativeCycle()) return;
 			}
 		}
 	}

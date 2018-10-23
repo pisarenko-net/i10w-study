@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -6,14 +7,14 @@ import java.util.Scanner;
 import edu.princeton.cs.algs4.IndexMinPQ;
 
 public class Dijkstra {
-	private Edge[] edgeTo;
 	private double[] distTo;
+	private Edge[] edgeTo;
 	private IndexMinPQ<Double> pq;
 
 	public Dijkstra(EdgeWeightedDirectedGraph g, int s) {
 		edgeTo = new Edge[g.V()];
 		distTo = new double[g.V()];
-		for (int i = 0; i < g.V(); i++) distTo[i] = Double.POSITIVE_INFINITY;
+		for (int v = 0; v < g.V(); v++) distTo[v] = Double.POSITIVE_INFINITY;
 		pq = new IndexMinPQ<>(g.V());
 
 		distTo[s] = 0.0;
@@ -22,7 +23,7 @@ public class Dijkstra {
 		while (!pq.isEmpty()) {
 			relax(g, pq.delMin());
 		}
-	}
+	} 
 
 	private void relax(EdgeWeightedDirectedGraph g, int v) {
 		for (Edge e : g.adjacentEdges(v)) {
@@ -36,16 +37,16 @@ public class Dijkstra {
 		}
 	}
 
-	public boolean hasPathTo(int v) {
-		return distTo[v] != Double.POSITIVE_INFINITY;
-	}
-
 	public double distTo(int v) {
 		return distTo[v];
 	}
 
+	public boolean hasPathTo(int v) {
+		return distTo[v] != Double.POSITIVE_INFINITY;
+	}
+
 	public Iterable<Edge> pathTo(int v) {
-		if (!hasPathTo(v)) return null;
+		if (!hasPathTo(v)) return Collections.emptyList();
 		Deque<Edge> path = new LinkedList<>();
 		for (Edge e = edgeTo[v]; e != null; e = edgeTo[e.from()]) path.push(e);
 		return path;
