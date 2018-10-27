@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -62,7 +63,7 @@ public class BellmanFord {
 	}
 
 	public Iterable<Edge> pathTo(int v) {
-		if (!hasPathTo(v)) return null;
+		if (!hasPathTo(v)) return Collections.emptyList();
 		Deque<Edge> path = new LinkedList<>();
 		for (Edge e = edgeTo[v]; e != null; e = edgeTo[e.from()]) path.push(e);
 		return path;
