@@ -60,11 +60,11 @@ public class Huffman {
 		if (n.isLeaf()) {
 			BinaryStdOut.write(true);
 			BinaryStdOut.write(n.ch, 8);
-			return;
+		} else {
+			BinaryStdOut.write(false);
+			writeTrie(n.left);
+			writeTrie(n.right);
 		}
-		BinaryStdOut.write(false);
-		writeTrie(n.left);
-		writeTrie(n.right);
 	}
 
 	private static void buildCode(List<Boolean>[] st, Node n, List<Boolean> code) {
