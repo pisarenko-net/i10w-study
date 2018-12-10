@@ -4,14 +4,13 @@ import java.util.Random;
 public class RabinKarp {
 	private static final int R = 256;
 
-	private long Q;
+	private long Q = getRandomPrime();
 	private long RM = 1;
 	private long patternHash;
 	private String pattern;
 
 	public RabinKarp(String pattern) {
 		this.pattern = pattern;
-		Q = getRandomPrime();
 		this.patternHash = hash(pattern, pattern.length());
 		for (int i = 1; i < pattern.length(); i++) RM = RM * R % Q;
 	}
@@ -22,8 +21,7 @@ public class RabinKarp {
 
 	private long hash(String s, int len) {
 		long hash = 0;
-		for (int i = 0; i < len; i++)
-			hash = (hash * R + s.charAt(i)) % Q;
+		for (int i = 0; i < len; i++) hash = (hash * R + s.charAt(i)) % Q;
 		return hash;
 	}
 
