@@ -16,13 +16,9 @@ public class QuickSort {
 
 		while (i <= gt) {
 			int cmp = a[i].compareTo(v);
-			if (cmp < 0) {
-				exch(a, lt++, i++);
-			} else if (cmp > 0) {
-				exch(a, gt--, i);
-			} else {
-				i++;
-			}
+			if (cmp < 0) exch(a, lt++, i++);
+			else if (cmp > 0) exch(a, gt--, i);
+			else i++;
 		}
 
 		sort(a, lo, lt-1);
