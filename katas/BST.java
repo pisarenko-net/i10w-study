@@ -1,16 +1,26 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
-import lombok.*;
 
 public class BST<Key extends Comparable<Key>, Value> {
 	private Node root;
 
-	@RequiredArgsConstructor
+	public BST() {}
+
+	private BST(Node root) {
+		this.root = root;
+	}
+
 	private class Node {
-		@NonNull Key key;
-		@NonNull Value value;
+		Key key;
+		Value value;
 		Node left, right;
 		int size = 1;
+		Node(Key key, Value value) {
+			this.key = key;
+			this.value = value;
+		}
 	}
 
 	public int size() {
@@ -93,6 +103,28 @@ public class BST<Key extends Comparable<Key>, Value> {
 		return t != null ? t : n;
 	}
 
+	// assumes unique keys
+	public List<BST<Key, Value>> split(Key key) {
+		Node[] subtrees = split(root, key);
+		return Arrays.asList(new BST<Key, Value>(subtrees[0]), new BST<Key, Value>(subtrees[1]));
+	}
+
+	private Node[] split(Node n, Key key) {
+		if (n == null) return new BST.Node[2];
+		int cmp = n.key.compareTo(key);
+		if (cmp <= 0) {
+			Node[] subtrees = split(n.right, key);
+			n.right = subtrees[0];
+			subtrees[0] = n;
+			return subtrees;
+		} else {
+			Node[] subtrees = split(n.left, key);
+			n.left = subtrees[1];
+			subtrees[1] = n;
+			return subtrees;
+		}
+	}
+
 	public Key min() {
 		return root == null ? null : min(root).key;
 	}
@@ -149,6 +181,12 @@ public class BST<Key extends Comparable<Key>, Value> {
 		System.out.println(bst.floor(89));
 		System.out.println(bst.min());
 		System.out.println(bst.max());
+
+		List<BST<Integer, String>> subtrees = bst.split(3);
+		for (BST<Integer, String> subtree : subtrees) {
+			System.out.println("Subtree keys:");
+			for (Integer key : subtree.keys()) System.out.println(key);
+		}
 
 		// for (Integer k : bst.keys(2, 30)) {
 		// 	System.out.println(k);
