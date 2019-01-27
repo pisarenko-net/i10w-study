@@ -1,21 +1,23 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 
-import lombok.*;
-
 public class KdTree<T> {
-	public static final double MAX_X = 10.0;
-	public static final double MAX_Y = 10.0;
+	private static final double MAX_X = 10.0;
+	private static final double MAX_Y = 10.0;
 
-	@RequiredArgsConstructor
 	private class Node {
-		@NonNull Point2D point;
-		@NonNull RectHV plane;
-		@NonNull T value;
+		Point2D point;
+		RectHV plane;
+		T value;
 		Node left, right;
+		Node(Point2D point, RectHV plane, T value) {
+			this.point = point;
+			this.plane = plane;
+			this.value = value;
+		}
 	}
 
 	private Node root;
@@ -26,20 +28,9 @@ public class KdTree<T> {
 
 	private T get(Node n, Point2D p, boolean xCmp) {
 		if (n == null) return null;
-		else if (n.point.x() == p.x() && n.point.y() == p.y()) return n.value;
-		else if (xCmp) {
-			if (p.x() < n.point.x()) {
-				return get(n.left, p, !xCmp);
-			} else {
-				return get(n.right, p, !xCmp);
-			}
-		} else {
-			if (p.y() < n.point.y()) {
-				return get(n.left, p, !xCmp);
-			} else {
-				return get(n.right, p, !xCmp);
-			}
-		}
+		else if (p.x() == n.point.x() && p.y() == n.point.y()) return n.value;
+		else if ((xCmp && (p.x() < n.point.x())) || (!xCmp && (p.y() < n.point.y()))) return get(n.left, p, !xCmp);
+		else return get(n.right, p, !xCmp);
 	}
 
 	public void put(Point2D p, T value) {
@@ -62,21 +53,22 @@ public class KdTree<T> {
 				n.right = put(n.right, p, value, x0, n.point.y(), x1, y1, !xCmp);
 			}
 		}
+
 		return n;
 	}
 
 	public Iterable<Point2D> range(RectHV query) {
-		Queue<Point2D> queue = new LinkedList<>();
-		range(root, queue, query);
-		return queue;
+		List<Point2D> points = new ArrayList<>();
+		range(root, points, query);
+		return points;
 	}
 
-	private void range(Node n, Queue<Point2D> queue, RectHV query) {
+	private void range(Node n, List<Point2D> points, RectHV query) {
 		if (n == null) return;
-		if (query.contains(n.point)) queue.add(n.point);
+		if (query.contains(n.point)) points.add(n.point);
 		if (query.intersects(n.plane)) {
-			range(n.left, queue, query);
-			range(n.right, queue, query);
+			range(n.left, points, query);
+			range(n.right, points, query);
 		}
 	}
 
@@ -84,13 +76,12 @@ public class KdTree<T> {
 		return root != null ? nearest(root, p, root.point, true) : null;
 	}
 
-	private Point2D nearest(Node n, Point2D p, Point2D closestFound, boolean xCmp) {
-		if (n == null) return closestFound;
-		if (n.point.distanceSquaredTo(p) < closestFound.distanceSquaredTo(p)) closestFound = n.point;
-		if (n.plane.distanceSquaredTo(p) < closestFound.distanceSquaredTo(p)) {
-			Node queriedFirst;
-			Node queriedSecond;
-
+	private Point2D nearest(Node n, Point2D p, Point2D closestSoFar, boolean xCmp) {
+		if (n == null) return closestSoFar;
+		if (p.distanceSquaredTo(n.point) < p.distanceSquaredTo(closestSoFar)) closestSoFar = n.point;
+		if (n.plane.distanceSquaredTo(p) < closestSoFar.distanceSquaredTo(p)) {
+			Node queriedFirst, queriedSecond;
+			
 			if ((xCmp && (p.x() < n.point.x())) || (!xCmp && (p.y() < n.point.y()))) {
 				queriedFirst = n.left;
 				queriedSecond = n.right;
@@ -98,11 +89,11 @@ public class KdTree<T> {
 				queriedFirst = n.right;
 				queriedSecond = n.left;
 			}
-			
-			closestFound = nearest(queriedFirst, p, closestFound, !xCmp);
-			closestFound = nearest(queriedSecond, p, closestFound, !xCmp);
+
+			closestSoFar = nearest(queriedFirst, p, closestSoFar, !xCmp);
+			closestSoFar = nearest(queriedSecond, p, closestSoFar, !xCmp);
 		}
-		return closestFound;
+		return closestSoFar;
 	}
 
 	public static void main(String[] args) {
